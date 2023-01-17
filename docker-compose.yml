@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  storefront:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: storefront:test
+    container_name: localvocal-storefront
+    environment:
+      NEXT_PUBLIC_MEDUSA_BACKEND_URL: https://api.localvocal.id
+    ports:
+      - "8000:8000"
