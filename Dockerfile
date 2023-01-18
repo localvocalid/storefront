@@ -1,30 +1,42 @@
 # Install dependencies only when needed
-FROM node:lts-alpine AS deps
-
-WORKDIR /opt/app
+FROM node:16-alpine AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
 # Rebuild the source code only when needed
-# This is where because may be the case that you would try
-# to build the app based on some `X_TAG` in my case (Git commit hash)
-# but the code hasn't changed.
-FROM node:lts-alpine AS builder
+FROM node:16-alpine AS builder
 
-ENV NODE_ENV=production
-WORKDIR /opt/app
+WORKDIR /app
+
+COPY --from=deps /app/node_modules ./node_modules
+
 COPY . .
-COPY --from=deps /opt/app/node_modules ./node_modules
+
 RUN yarn build
 
 # Production image, copy all the files and run next
-FROM node:lts-alpine AS runner
+FROM node:16-alpine AS runner
+WORKDIR /app
 
-ARG X_TAG
-WORKDIR /opt/app
-ENV NODE_ENV=production
-COPY --from=builder /opt/app/next.config.js ./
-COPY --from=builder /opt/app/public ./public
-COPY --from=builder /opt/app/.next ./.next
-COPY --from=builder /opt/app/node_modules ./node_modules
-CMD ["node_modules/.bin/next", "start -p 8000"]
+ENV NODE_ENV production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./package.json
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 8000
+
+ENV PORT 8000
+
+CMD ["node", "server.js"]
