@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: storefront:test
+    image: storefront:starter
     container_name: localvocal-storefront
     environment:
       NEXT_PUBLIC_MEDUSA_BACKEND_URL: https://api.localvocal.id

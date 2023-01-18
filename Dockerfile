@@ -1,49 +1,30 @@
-# 1. Install dependencies only when needed
-FROM node:16-alpine AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+# Install dependencies only when needed
+FROM node:lts-alpine AS deps
 
-WORKDIR /app
+WORKDIR /opt/app
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-# Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
-
-
-# 2. Rebuild the source code only when needed
-FROM node:16-alpine AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-
-RUN yarn build
-
-# 3. Production image, copy all the files and run next
-FROM node:16-alpine AS runner
-WORKDIR /app
+# Rebuild the source code only when needed
+# This is where because may be the case that you would try
+# to build the app based on some `X_TAG` in my case (Git commit hash)
+# but the code hasn't changed.
+FROM node:lts-alpine AS builder
 
 ENV NODE_ENV=production
+WORKDIR /opt/app
+COPY . .
+COPY --from=deps /opt/app/node_modules ./node_modules
+RUN yarn build
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+# Production image, copy all the files and run next
+FROM node:lts-alpine AS runner
 
-COPY --from=builder /app/public ./public
-
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-
-USER nextjs
-
-EXPOSE 8000
-
-ENV PORT 8000
-
-CMD ["node", "server.js"]
+ARG X_TAG
+WORKDIR /opt/app
+ENV NODE_ENV=production
+COPY --from=builder /opt/app/next.config.js ./
+COPY --from=builder /opt/app/public ./public
+COPY --from=builder /opt/app/.next ./.next
+COPY --from=builder /opt/app/node_modules ./node_modules
+CMD ["node_modules/.bin/next", "start"]
