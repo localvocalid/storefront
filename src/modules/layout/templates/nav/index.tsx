@@ -12,26 +12,6 @@ import { useEffect, useState } from "react"
 const Nav = () => {
   const { pathname } = useRouter()
   const [isHome, setIsHome] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-
-  //useEffect that detects if window is scrolled > 5px on the Y axis
-  useEffect(() => {
-    if (isHome) {
-      const detectScrollY = () => {
-        if (window.scrollY > 5) {
-          setIsScrolled(true)
-        } else {
-          setIsScrolled(false)
-        }
-      }
-
-      window.addEventListener("scroll", detectScrollY)
-
-      return () => {
-        window.removeEventListener("scroll", detectScrollY)
-      }
-    }
-  }, [isHome])
 
   useEffect(() => {
     pathname === "/" ? setIsHome(true) : setIsHome(false)
@@ -41,24 +21,16 @@ const Nav = () => {
 
   return (
     <div
-      className={clsx("sticky top-0 inset-x-0 z-50 group", {
-        "!fixed": isHome,
-      })}
+      className={clsx("fixed bottom-0 inset-x-0 z-50 group")}
     >
       <header
         className={clsx(
-          "relative h-16 px-8 mx-auto transition-colors bg-transparent border-b border-transparent duration-200 group-hover:bg-white group-hover:border-gray-200",
-          {
-            "!bg-white !border-gray-200": !isHome || isScrolled,
-          }
+          "relative h-16 px-8 mx-auto bg-white border-t border-gray-200"
         )}
       >
         <nav
           className={clsx(
-            "text-gray-900 flex items-center justify-between w-full h-full text-small-regular transition-colors duration-200",
-            {
-              "text-white group-hover:text-gray-900": isHome && !isScrolled,
-            }
+            "flex items-center justify-between w-full h-full text-small-regular transition-colors duration-200 text-gray-900"
           )}
         >
           <div className="flex-1 basis-0 h-full flex items-center">

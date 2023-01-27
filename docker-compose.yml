@@ -6,7 +6,5 @@ services:
       dockerfile: Dockerfile
     image: storefront:starter
     container_name: localvocal-storefront
-    environment:
-      NEXT_PUBLIC_MEDUSA_BACKEND_URL: https://api.localvocal.id
     ports:
       - "8000:8000"
