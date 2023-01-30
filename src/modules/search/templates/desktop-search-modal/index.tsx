@@ -21,7 +21,7 @@ const DesktopSearchModal = () => {
         <Modal.Body>
           <InstantSearch indexName={SEARCH_INDEX_NAME} searchClient={searchClient}>
             <div className="flex flex-col h-full">
-              <div className="w-full flex items-center gap-x-2 bg-gray-50 p-4">
+              <div className="w-full flex items-center gap-x-2 bg-gray-50 p-4 rounded-full">
                 <Search />
                 <SearchBox />
               </div>

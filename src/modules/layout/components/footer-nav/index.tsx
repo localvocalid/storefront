@@ -36,12 +36,12 @@ const FooterNav = () => {
             <span className="text-base-semi">Tentang</span>
             <ul className="grid grid-cols-1 gap-y-2">
               <li>
-                <a href="https://github.com/medusajs" rel="noreferrer" target="_blank">
+                <a href="/payment" rel="noreferrer" target="_blank">
                   Pembayaran
                 </a>
               </li>
               <li>
-                <a href="https://docs.medusajs.com" rel="noreferrer" target="_blank">
+                <a href="/term" rel="noreferrer" target="_blank">
                   Ketentuan & Privasi
                 </a>
               </li>
@@ -49,7 +49,7 @@ const FooterNav = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col-reverse gap-y-4 justify-center xsmall:items-center xsmall:flex-row xsmall:items-end xsmall:justify-between">
+      <div className="flex flex-col-reverse gap-y-4 justify-center xsmall:items-center xsmall:flex-row xsmall:justify-between">
         <span className="text-xsmall-regular text-gray-500">© Copyright 2023 Localvocal</span>
         <div className="min-w-[316px] flex xsmall:justify-end">
           <CountrySelect />
