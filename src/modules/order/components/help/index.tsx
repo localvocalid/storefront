@@ -1,10 +1,9 @@
-import Link from "next/link"
-import React from "react"
+import Link from 'next/link'
 
 const Help = () => {
   return (
     <div>
-      <h2 className="text-base-semi">Need help?</h2>
+      <h2 className="text-base-semi">Butuh bantuan?</h2>
       <div className="text-base-regular my-2">
         <ul className="gap-y-2 flex flex-col">
           <li>
