@@ -1,5 +1,5 @@
-import { useRegions } from "medusa-react"
-import { useMemo } from "react"
+import { useRegions } from 'medusa-react'
+import { useMemo } from 'react'
 
 type CountryOption = {
   country: string
@@ -12,8 +12,8 @@ const useCountryOptions = () => {
 
   const options: CountryOption[] | undefined = useMemo(() => {
     return regions
-      ?.map((r) => {
-        return r.countries.map((c) => ({
+      ?.map(r => {
+        return r.countries.map(c => ({
           country: c.iso_2,
           region: r.id,
           label: c.display_name,

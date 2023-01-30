@@ -1,14 +1,15 @@
-import { RadioGroup } from "@headlessui/react"
-import { ErrorMessage } from "@hookform/error-message"
-import { useCheckout } from "@lib/context/checkout-context"
-import { Cart } from "@medusajs/medusa"
-import Radio from "@modules/common/components/radio"
-import Spinner from "@modules/common/icons/spinner"
-import clsx from "clsx"
-import { formatAmount, useCart, useCartShippingOptions } from "medusa-react"
-import React, { useEffect, useMemo } from "react"
-import { Controller, useForm } from "react-hook-form"
-import StepContainer from "../step-container"
+import { RadioGroup } from '@headlessui/react'
+import { ErrorMessage } from '@hookform/error-message'
+import { useCheckout } from '@lib/context/checkout-context'
+import { Cart } from '@medusajs/medusa'
+import Radio from '@modules/common/components/radio'
+import Spinner from '@modules/common/icons/spinner'
+import clsx from 'clsx'
+import { formatAmount, useCart, useCartShippingOptions } from 'medusa-react'
+import React, { useEffect, useMemo } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+
+import StepContainer from '../step-container'
 
 type ShippingOption = {
   value: string
@@ -17,7 +18,7 @@ type ShippingOption = {
 }
 
 type ShippingProps = {
-  cart: Omit<Cart, "refundable_amount" | "refunded_total">
+  cart: Omit<Cart, 'refundable_amount' | 'refunded_total'>
 }
 
 type ShippingFormProps = {
@@ -57,15 +58,14 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
         onSuccess: ({ cart }) => setCart(cart),
         onError: () =>
           setError(
-            "soId",
+            'soId',
             {
-              type: "validate",
-              message:
-                "An error occurred while adding shipping. Please try again.",
+              type: 'validate',
+              message: 'An error occurred while adding shipping. Please try again.',
             },
-            { shouldFocus: true }
+            { shouldFocus: true },
           ),
-      }
+      },
     )
   }
 
@@ -77,7 +77,7 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
   // Memoized shipping method options
   const shippingMethods: ShippingOption[] = useMemo(() => {
     if (shipping_options && cart?.region) {
-      return shipping_options?.map((option) => ({
+      return shipping_options?.map(option => ({
         value: option.id,
         label: option.name,
         price: formatAmount({
@@ -96,46 +96,36 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
 
   return (
     <StepContainer
-      index={sameBilling ? 2 : 3}
-      title="Delivery"
       closedState={
         <div className="px-8 pb-8 text-small-regular">
           <p>Enter your address to see available delivery options.</p>
         </div>
       }
+      index={sameBilling ? 2 : 3}
+      title="Jasa Pengiriman"
     >
       <Controller
-        name="soId"
         control={control}
+        name="soId"
         render={({ field: { value, onChange } }) => {
           return (
             <div>
-              <RadioGroup
-                value={value}
-                onChange={(value: string) => handleChange(value, onChange)}
-              >
+              <RadioGroup onChange={(value: string) => handleChange(value, onChange)} value={value}>
                 {shippingMethods && shippingMethods.length ? (
-                  shippingMethods.map((option) => {
+                  shippingMethods.map(option => {
                     return (
                       <RadioGroup.Option
+                        className={clsx('flex items-center justify-between text-small-regular cursor-pointer py-4 border-b border-gray-200 last:border-b-0 px-8', {
+                          'bg-gray-50': option.value === value,
+                        })}
                         key={option.value}
                         value={option.value}
-                        className={clsx(
-                          "flex items-center justify-between text-small-regular cursor-pointer py-4 border-b border-gray-200 last:border-b-0 px-8",
-                          {
-                            "bg-gray-50": option.value === value,
-                          }
-                        )}
                       >
                         <div className="flex items-center gap-x-4">
                           <Radio checked={value === option.value} />
-                          <span className="text-base-regular">
-                            {option.label}
-                          </span>
+                          <span className="text-base-regular">{option.label}</span>
                         </div>
-                        <span className="justify-self-end text-gray-700">
-                          {option.price}
-                        </span>
+                        <span className="justify-self-end text-gray-700 font-semibold">{option.price}</span>
                       </RadioGroup.Option>
                     )
                   })

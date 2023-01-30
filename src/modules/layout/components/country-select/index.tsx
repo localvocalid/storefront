@@ -1,9 +1,9 @@
-import { Listbox, Transition } from "@headlessui/react"
-import { useStore } from "@lib/context/store-context"
-import useToggleState from "@lib/hooks/use-toggle-state"
-import { useRegions } from "medusa-react"
-import { Fragment, useEffect, useMemo, useState } from "react"
-import ReactCountryFlag from "react-country-flag"
+import { Listbox, Transition } from '@headlessui/react'
+import { useStore } from '@lib/context/store-context'
+import useToggleState from '@lib/hooks/use-toggle-state'
+import { useRegions } from 'medusa-react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
+import ReactCountryFlag from 'react-country-flag'
 
 type CountryOption = {
   country: string
@@ -19,8 +19,8 @@ const CountrySelect = () => {
 
   const options: CountryOption[] | undefined = useMemo(() => {
     return regions
-      ?.map((r) => {
-        return r.countries.map((c) => ({
+      ?.map(r => {
+        return r.countries.map(c => ({
           country: c.iso_2,
           region: r.id,
           label: c.display_name,
@@ -31,7 +31,7 @@ const CountrySelect = () => {
 
   useEffect(() => {
     if (countryCode) {
-      const option = options?.find((o) => o.country === countryCode)
+      const option = options?.find(o => o.country === countryCode)
       setCurrent(option)
     }
   }, [countryCode, options])
@@ -43,26 +43,19 @@ const CountrySelect = () => {
 
   return (
     <div onMouseEnter={open} onMouseLeave={close}>
-      <Listbox
-        onChange={handleChange}
-        value={
-          countryCode
-            ? options?.find((o) => o.country === countryCode)
-            : undefined
-        }
-      >
+      <Listbox onChange={handleChange} value={countryCode ? options?.find(o => o.country === countryCode) : undefined}>
         <Listbox.Button className="py-1 w-full">
           <div className="text-small-regular flex items-center gap-x-2 xsmall:justify-end">
-            <span>Shipping to:</span>
+            <span>Pengiriman Ke:</span>
             {current && (
               <span className="text-small-semi flex items-center gap-x-2">
                 <ReactCountryFlag
-                  svg
-                  style={{
-                    width: "16px",
-                    height: "16px",
-                  }}
                   countryCode={current.country}
+                  style={{
+                    width: '16px',
+                    height: '16px',
+                  }}
+                  svg
                 />
                 {current.label}
               </span>
@@ -70,32 +63,22 @@ const CountrySelect = () => {
           </div>
         </Listbox.Button>
         <div className="relative w-full min-w-[316px]">
-          <Transition
-            show={state}
-            as={Fragment}
-            leave="transition ease-in duration-150"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+          <Transition as={Fragment} leave="transition ease-in duration-150" leaveFrom="opacity-100" leaveTo="opacity-0" show={state}>
             <Listbox.Options
               className="absolute -bottom-[calc(100%-36px)] left-0 xsmall:left-auto xsmall:right-0 max-h-[442px] overflow-y-scroll z-[900] bg-white drop-shadow-md text-small-regular uppercase text-black no-scrollbar"
               static
             >
-              {options?.map((o) => {
+              {options?.map(o => {
                 return (
-                  <Listbox.Option
-                    key={o.country}
-                    value={o}
-                    className="py-2 hover:bg-gray-200 px-3 cursor-pointer flex items-center gap-x-2"
-                  >
+                  <Listbox.Option className="py-2 hover:bg-gray-200 px-3 cursor-pointer flex items-center gap-x-2" key={o.country} value={o}>
                     <ReactCountryFlag
-                      svg
-                      style={{
-                        width: "16px",
-                        height: "16px",
-                      }}
                       countryCode={o.country}
-                    />{" "}
+                      style={{
+                        width: '16px',
+                        height: '16px',
+                      }}
+                      svg
+                    />{' '}
                     {o.label}
                   </Listbox.Option>
                 )

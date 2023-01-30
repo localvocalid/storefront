@@ -1,9 +1,6 @@
-import { RefObject, useEffect, useState } from "react"
+import { RefObject, useEffect, useState } from 'react'
 
-export const useIntersection = (
-  element: RefObject<HTMLDivElement>,
-  rootMargin: string
-) => {
+export const useIntersection = (element: RefObject<HTMLDivElement>, rootMargin: string) => {
   const [isVisible, setState] = useState(false)
 
   useEffect(() => {
@@ -17,7 +14,7 @@ export const useIntersection = (
       ([entry]) => {
         setState(entry.isIntersecting)
       },
-      { rootMargin }
+      { rootMargin },
     )
 
     observer.observe(el)

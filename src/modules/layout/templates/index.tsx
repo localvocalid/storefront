@@ -1,15 +1,30 @@
-import Footer from "@modules/layout/templates/footer"
-import Nav from "@modules/layout/templates/nav"
-import React from "react"
-import Container from "./container"
+import AppBar from '@modules/layout/templates/app-bar'
+import Footer from '@modules/layout/templates/footer'
+import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
+
+import LayoutContainer from './layout-container'
 
 const Layout: React.FC = ({ children }) => {
   return (
-      <Container maxWidth="1024px">
-        <Nav />
-          <main className="relative">{children}</main>
-        <Footer />
-      </Container>
+    <LayoutContainer
+      attribute={{
+        className: 'w-full bg-white h-full',
+      }}
+      maxWidth="800px"
+    >
+      <div className="w-full flex p-4 bg-primary items-center">
+        <Link href="/">
+          <a>
+            <Image alt="Localvocal" height={24} src="/static/localvocal.png" width={154} />
+          </a>
+        </Link>
+      </div>
+      <main className="relative">{children}</main>
+      <AppBar />
+      <Footer />
+    </LayoutContainer>
   )
 }
 

@@ -1,14 +1,14 @@
-import { fetchProductsList } from "@lib/data"
-import usePreviews from "@lib/hooks/use-previews"
-import getNumberOfSkeletons from "@lib/util/get-number-of-skeletons"
-import repeat from "@lib/util/repeat"
-import { StoreGetProductsParams } from "@medusajs/medusa"
-import ProductPreview from "@modules/products/components/product-preview"
-import SkeletonProductPreview from "@modules/skeletons/components/skeleton-product-preview"
-import { useCart } from "medusa-react"
-import { useEffect, useMemo } from "react"
-import { useInView } from "react-intersection-observer"
-import { useInfiniteQuery } from "react-query"
+import { fetchProductsList } from '@lib/data'
+import usePreviews from '@lib/hooks/use-previews'
+import getNumberOfSkeletons from '@lib/util/get-number-of-skeletons'
+import repeat from '@lib/util/repeat'
+import { StoreGetProductsParams } from '@medusajs/medusa'
+import ProductPreview from '@modules/products/components/product-preview'
+import SkeletonProductPreview from '@modules/skeletons/components/skeleton-product-preview'
+import { useCart } from 'medusa-react'
+import { useEffect, useMemo } from 'react'
+import { useInView } from 'react-intersection-observer'
+import { useInfiniteQuery } from 'react-query'
 
 type InfiniteProductsType = {
   params: StoreGetProductsParams
@@ -34,14 +34,9 @@ const InfiniteProducts = ({ params }: InfiniteProductsType) => {
     }
   }, [cart?.id, params])
 
-  const { data, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } =
-    useInfiniteQuery(
-      [`infinite-products-store`, queryParams, cart],
-      ({ pageParam }) => fetchProductsList({ pageParam, queryParams }),
-      {
-        getNextPageParam: (lastPage) => lastPage.nextPage,
-      }
-    )
+  const { data, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } = useInfiniteQuery(['infinite-products-store', queryParams, cart], ({ pageParam }) => fetchProductsList({ pageParam, queryParams }), {
+    getNextPageParam: lastPage => lastPage.nextPage,
+  })
 
   const previews = usePreviews({ pages: data?.pages, region: cart?.region })
 
@@ -54,30 +49,27 @@ const InfiniteProducts = ({ params }: InfiniteProductsType) => {
 
   return (
     <div className="flex-1 content-container">
-      <ul className="grid grid-cols-2 small:grid-cols-3 medium:grid-cols-4 gap-x-4 gap-y-8 flex-1">
-        {previews.map((p) => (
+      <ul className="grid grid-cols-2 small:grid-cols-3 gap-x-4 gap-y-8 flex-1">
+        {previews.map(p => (
           <li key={p.id}>
             <ProductPreview {...p} />
           </li>
         ))}
         {isLoading &&
           !previews.length &&
-          repeat(8).map((index) => (
+          repeat(8).map(index => (
             <li key={index}>
               <SkeletonProductPreview />
             </li>
           ))}
         {isFetchingNextPage &&
-          repeat(getNumberOfSkeletons(data?.pages)).map((index) => (
+          repeat(getNumberOfSkeletons(data?.pages)).map(index => (
             <li key={index}>
               <SkeletonProductPreview />
             </li>
           ))}
       </ul>
-      <div
-        className="py-16 flex justify-center items-center text-small-regular text-gray-700"
-        ref={ref}
-      >
+      <div className="py-16 flex justify-center items-center text-small-regular text-gray-700" ref={ref}>
         <span ref={ref}></span>
       </div>
     </div>

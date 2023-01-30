@@ -1,6 +1,6 @@
-import { formatAmount, useCart, useProducts } from "medusa-react"
-import { useMemo } from "react"
-import { CalculatedVariant } from "types/medusa"
+import { formatAmount, useCart, useProducts } from 'medusa-react'
+import { useMemo } from 'react'
+import { CalculatedVariant } from 'types/medusa'
 
 type useProductPriceProps = {
   id: string
@@ -15,7 +15,7 @@ const useProductPrice = ({ id, variantId }: useProductPriceProps) => {
       id: id,
       cart_id: cart?.id,
     },
-    { enabled: !!cart }
+    { enabled: !!cart },
   )
 
   const product = products?.[0]
@@ -50,10 +50,7 @@ const useProductPrice = ({ id, variantId }: useProductPriceProps) => {
         includeTaxes: false,
       }),
       price_type: cheapestVariant.calculated_price_type,
-      percentage_diff: getPercentageDiff(
-        cheapestVariant.original_price,
-        cheapestVariant.calculated_price
-      ),
+      percentage_diff: getPercentageDiff(cheapestVariant.original_price, cheapestVariant.calculated_price),
     }
   }, [product, cart])
 
@@ -62,9 +59,7 @@ const useProductPrice = ({ id, variantId }: useProductPriceProps) => {
       return null
     }
 
-    const variant = product.variants.find(
-      (v) => v.id === variantId || v.sku === variantId
-    ) as CalculatedVariant
+    const variant = product.variants.find(v => v.id === variantId || v.sku === variantId) as CalculatedVariant
 
     if (!variant) {
       return null
@@ -82,10 +77,7 @@ const useProductPrice = ({ id, variantId }: useProductPriceProps) => {
         includeTaxes: false,
       }),
       price_type: variant.calculated_price_type,
-      percentage_diff: getPercentageDiff(
-        variant.original_price,
-        variant.calculated_price
-      ),
+      percentage_diff: getPercentageDiff(variant.original_price, variant.calculated_price),
     }
   }, [product, variantId, cart])
 

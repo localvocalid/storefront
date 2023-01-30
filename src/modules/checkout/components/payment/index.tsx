@@ -1,8 +1,9 @@
-import { useCheckout } from "@lib/context/checkout-context"
-import Spinner from "@modules/common/icons/spinner"
-import { useEffect } from "react"
-import PaymentContainer from "../payment-container"
-import StepContainer from "../step-container"
+import { useCheckout } from '@lib/context/checkout-context'
+import Spinner from '@modules/common/icons/spinner'
+import { useEffect } from 'react'
+
+import PaymentContainer from '../payment-container'
+import StepContainer from '../step-container'
 
 const Payment = () => {
   const {
@@ -35,13 +36,13 @@ const Payment = () => {
 
   return (
     <StepContainer
-      title="Payment"
-      index={isSame ? 3 : 4}
       closedState={
         <div className="px-8 pb-8 text-small-regular">
           <p>Enter your address to see available payment options.</p>
         </div>
       }
+      index={isSame ? 3 : 4}
+      title="Pembayaran"
     >
       <div>
         {cart?.payment_sessions?.length ? (
@@ -49,18 +50,13 @@ const Payment = () => {
             .sort((a, b) => {
               return a.provider_id > b.provider_id ? 1 : -1
             })
-            .map((paymentSession) => {
+            .map(paymentSession => {
               return (
                 <PaymentContainer
-                  paymentSession={paymentSession}
                   key={paymentSession.id}
-                  selected={
-                    cart?.payment_session?.provider_id ===
-                    paymentSession.provider_id
-                  }
-                  setSelected={() =>
-                    setPaymentSession(paymentSession.provider_id)
-                  }
+                  paymentSession={paymentSession}
+                  selected={cart?.payment_session?.provider_id === paymentSession.provider_id}
+                  setSelected={() => setPaymentSession(paymentSession.provider_id)}
                 />
               )
             })

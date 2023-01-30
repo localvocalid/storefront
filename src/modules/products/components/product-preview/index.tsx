@@ -1,32 +1,24 @@
-import clsx from "clsx"
-import Link from "next/link"
-import { ProductPreviewType } from "types/global"
-import Thumbnail from "../thumbnail"
+import clsx from 'clsx'
+import Link from 'next/link'
+import { ProductPreviewType } from 'types/global'
 
-const ProductPreview = ({
-  title,
-  handle,
-  thumbnail,
-  price,
-}: ProductPreviewType) => {
+import Thumbnail from '../thumbnail'
+
+const ProductPreview = ({ title, handle, thumbnail, price }: ProductPreviewType) => {
   return (
     <Link href={`/products/${handle}`}>
       <a>
         <div>
-          <Thumbnail thumbnail={thumbnail} size="full" />
+          <Thumbnail size="full" thumbnail={thumbnail} />
           <div className="text-base-regular mt-2">
             <span>{title}</span>
-            <div className="flex items-center gap-x-2 mt-1">
+            <div className="flex items-center gap-x-2 mt-1 flex-wrap">
               {price ? (
                 <>
-                  {price.price_type === "sale" && (
-                    <span className="line-through text-gray-500">
-                      {price.original_price}
-                    </span>
-                  )}
+                  {price.price_type === 'sale' && <span className="line-through font-semibold text-gray-500">{price.original_price.replace(/&nbsp;/g, '')}</span>}
                   <span
-                    className={clsx("font-semibold", {
-                      "text-rose-500": price.price_type === "sale",
+                    className={clsx('font-semibold', {
+                      'text-rose-500': price.price_type === 'sale',
                     })}
                   >
                     {price.calculated_price}

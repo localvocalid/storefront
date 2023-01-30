@@ -1,17 +1,17 @@
-import { Cart } from "@medusajs/medusa"
-import Button from "@modules/common/components/button"
-import Input from "@modules/common/components/input"
-import Trash from "@modules/common/icons/trash"
-import { useCart } from "medusa-react"
-import React, { useMemo } from "react"
-import { useForm } from "react-hook-form"
+import { Cart } from '@medusajs/medusa'
+import Button from '@modules/common/components/button'
+import Input from '@modules/common/components/input'
+import Trash from '@modules/common/icons/trash'
+import { useCart } from 'medusa-react'
+import React, { useMemo } from 'react'
+import { useForm } from 'react-hook-form'
 
 type GiftCardFormValues = {
   gift_card_code: string
 }
 
 type GiftCardProps = {
-  cart?: Omit<Cart, "refundable_amount" | "refunded_total">
+  cart?: Omit<Cart, 'refundable_amount' | 'refunded_total'>
 }
 
 const GiftCard: React.FC<GiftCardProps> = ({ cart }) => {
@@ -44,16 +44,16 @@ const GiftCard: React.FC<GiftCardProps> = ({ cart }) => {
         onSuccess: ({ cart }) => setCart(cart),
         onError: () => {
           setError(
-            "gift_card_code",
+            'gift_card_code',
             {
-              message: "Code is invalid",
+              message: 'Code is invalid',
             },
             {
               shouldFocus: true,
-            }
+            },
           )
         },
-      }
+      },
     )
   }
 
@@ -64,14 +64,14 @@ const GiftCard: React.FC<GiftCardProps> = ({ cart }) => {
       },
       {
         onSuccess: ({ cart }) => setCart(cart),
-      }
+      },
     )
   }
 
   return (
     <div className="w-full bg-white p-6 flex flex-col">
       <div className="mb-4">
-        <h3 className="text-base-semi">Gift Card</h3>
+        <h3 className="text-base-semi">Kode promo</h3>
       </div>
       <div className="text-small-regular">
         {appliedGiftCard ? (
@@ -81,33 +81,25 @@ const GiftCard: React.FC<GiftCardProps> = ({ cart }) => {
               <span className="font-semibold">{appliedGiftCard}</span>
             </div>
             <div>
-              <button
-                className="flex items-center gap-x-2"
-                onClick={onRemove}
-                disabled={isLoading}
-              >
+              <button className="flex items-center gap-x-2" disabled={isLoading} onClick={onRemove}>
                 <Trash size={16} />
                 <span className="sr-only">Remove gift card from order</span>
               </button>
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+          <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-[1fr_80px] gap-x-2">
               <Input
-                label="Code"
-                {...register("gift_card_code", {
-                  required: "Code is required",
+                label="Kode"
+                {...register('gift_card_code', {
+                  required: 'Kode harus diisi',
                 })}
                 errors={errors}
                 touched={touchedFields}
               />
               <div>
-                <Button
-                  className="!min-h-[0] h-[46px] w-[80px]"
-                  disabled={isLoading}
-                  isLoading={isLoading}
-                >
+                <Button className="!min-h-[0] h-[46px] w-[80px]" disabled={isLoading} isLoading={isLoading}>
                   Apply
                 </Button>
               </div>

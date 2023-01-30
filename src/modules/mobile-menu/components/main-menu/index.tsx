@@ -1,12 +1,12 @@
-import { useMobileMenu } from "@lib/context/mobile-menu-context"
-import { useStore } from "@lib/context/store-context"
-import useCountryOptions from "@lib/hooks/use-country-options"
-import ChevronDown from "@modules/common/icons/chevron-down"
-import Search from "@modules/common/icons/search"
-import X from "@modules/common/icons/x"
-import { useCollections, useMeCustomer } from "medusa-react"
-import Link from "next/link"
-import ReactCountryFlag from "react-country-flag"
+import { useMobileMenu } from '@lib/context/mobile-menu-context'
+import { useStore } from '@lib/context/store-context'
+import useCountryOptions from '@lib/hooks/use-country-options'
+import ChevronDown from '@modules/common/icons/chevron-down'
+import Search from '@modules/common/icons/search'
+import X from '@modules/common/icons/x'
+import { useCollections, useMeCustomer } from 'medusa-react'
+import Link from 'next/link'
+import ReactCountryFlag from 'react-country-flag'
 
 const MainMenu = () => {
   const { collections } = useCollections()
@@ -20,23 +20,20 @@ const MainMenu = () => {
     screen: [_, setScreen],
   } = useMobileMenu()
 
-  const setScreenCountry = () => setScreen("country")
-  const setScreenSearch = () => setScreen("search")
+  const setScreenCountry = () => setScreen('country')
+  const setScreenSearch = () => setScreen('search')
 
   return (
     <div className="flex flex-col flex-1">
       <div className="flex items-center justify-between w-full border-b border-gray-200 py-4 px-6">
         <div className="flex-1 basis-0">
-          <button
-            className="flex items-center gap-x-2"
-            onClick={setScreenCountry}
-          >
-            <ReactCountryFlag countryCode={countryCode || "us"} svg />
+          <button className="flex items-center gap-x-2" onClick={setScreenCountry}>
+            <ReactCountryFlag countryCode={countryCode || 'us'} svg />
             <ChevronDown />
           </button>
         </div>
         <div>
-          <h1 className="text-xl-semi uppercase">Acme</h1>
+          <h1 className="text-xl-semi uppercase">Localvocal</h1>
         </div>
         <div className="flex-1 basis-0 flex justify-end">
           <button onClick={close}>
@@ -47,12 +44,9 @@ const MainMenu = () => {
 
       <div className="space-y-6 flex-1 flex flex-col justify-between p-6">
         {process.env.FEATURE_SEARCH_ENABLED && (
-          <button
-            className="bg-gray-50 flex items-center px-4 py-2 gap-x-2 text-gray-500"
-            onClick={setScreenSearch}
-          >
+          <button className="bg-gray-50 flex items-center px-4 py-2 gap-x-2 text-gray-500" onClick={setScreenSearch}>
             <Search size={24} />
-            <span placeholder="Search products" className="text-base-regular">
+            <span className="text-base-regular" placeholder="Search products">
               Search products
             </span>
           </button>
@@ -63,10 +57,7 @@ const MainMenu = () => {
             <li className="bg-gray-50 p-4">
               <Link href="/store">
                 <a>
-                  <button
-                    className="flex items-center justify-between w-full"
-                    onClick={close}
-                  >
+                  <button className="flex items-center justify-between w-full" onClick={close}>
                     <span className="sr-only">Go to Store</span>
                     <span>Store</span>
                     <ChevronDown className="-rotate-90" />
@@ -76,17 +67,12 @@ const MainMenu = () => {
             </li>
             {collections ? (
               <>
-                {collections.map((collection) => (
-                  <li key={collection.id} className="bg-gray-50 p-4">
+                {collections.map(collection => (
+                  <li className="bg-gray-50 p-4" key={collection.id}>
                     <Link href={`/collections/${collection.id}`}>
                       <a>
-                        <button
-                          className="flex items-center justify-between w-full"
-                          onClick={close}
-                        >
-                          <span className="sr-only">
-                            Go to {collection.title} collection
-                          </span>
+                        <button className="flex items-center justify-between w-full" onClick={close}>
+                          <span className="sr-only">Go to {collection.title} collection</span>
                           <span>{collection.title}</span>
                           <ChevronDown className="-rotate-90" />
                         </button>
@@ -104,12 +90,9 @@ const MainMenu = () => {
             {!customer ? (
               <div className="flex flex-col gap-y-4">
                 <span className="text-gray-700 uppercase">Account</span>
-                <Link href={`/account/login`} passHref>
+                <Link href={'/account/login'} passHref>
                   <a>
-                    <button
-                      className="flex items-center justify-between border-b border-gray-200 py-2 w-full"
-                      onClick={close}
-                    >
+                    <button className="flex items-center justify-between border-b border-gray-200 py-2 w-full" onClick={close}>
                       <span className="sr-only">Go to sign in page</span>
                       <span className="normal-case">Sign in</span>
                       <ChevronDown className="-rotate-90" />
@@ -120,12 +103,9 @@ const MainMenu = () => {
             ) : (
               <div className="flex flex-col gap-y-4">
                 <span className="text-gray-700 uppercase">Signed in as</span>
-                <Link href={`/account`} passHref>
+                <Link href={'/account'} passHref>
                   <a>
-                    <button
-                      className="flex items-center justify-between border-b border-gray-200 py-2 w-full"
-                      onClick={close}
-                    >
+                    <button className="flex items-center justify-between border-b border-gray-200 py-2 w-full" onClick={close}>
                       <span className="sr-only">Go to account page</span>
                       <span className="normal-case">{customer.email}</span>
                       <ChevronDown className="-rotate-90" />
@@ -136,19 +116,11 @@ const MainMenu = () => {
             )}
             <div className="flex flex-col gap-y-4">
               <span className="text-gray-700 uppercase">Delivery</span>
-              <button
-                className="flex items-center justify-between border-b border-gray-200 py-2"
-                onClick={setScreenCountry}
-              >
-                <span className="sr-only">
-                  Click to select shipping country
-                </span>
+              <button className="flex items-center justify-between border-b border-gray-200 py-2" onClick={setScreenCountry}>
+                <span className="sr-only">Click to select shipping country</span>
                 <div className="flex items-center gap-x-2">
-                  <ReactCountryFlag countryCode={countryCode || "us"} svg />
-                  <span className="normal-case">
-                    Shipping to{" "}
-                    {countries?.find((c) => c.country === countryCode)?.label}
-                  </span>
+                  <ReactCountryFlag countryCode={countryCode || 'us'} svg />
+                  <span className="normal-case">Shipping to {countries?.find(c => c.country === countryCode)?.label}</span>
                 </div>
                 <ChevronDown className="-rotate-90" />
               </button>

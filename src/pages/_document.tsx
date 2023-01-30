@@ -1,5 +1,5 @@
-import { MEDUSA_BACKEND_URL } from "@lib/config"
-import Document, { Head, Html, Main, NextScript } from "next/document"
+import { MEDUSA_BACKEND_URL } from '@lib/config'
+import Document, { Head, Html, Main, NextScript } from 'next/document'
 
 class MyDocument extends Document {
   render() {
@@ -9,12 +9,8 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="preconnect" href={`//${hostname}`} crossOrigin="true" />
-          <link rel="dns-prefetch" href={`//${hostname}`} />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
-            rel="stylesheet"
-          />
+          <link crossOrigin="true" href={`//${hostname}`} rel="preconnect" />
+          <link href={`//${hostname}`} rel="dns-prefetch" />
         </Head>
         <body>
           <Main />

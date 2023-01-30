@@ -1,14 +1,10 @@
-import { medusaClient } from "@lib/config"
-import { handleError } from "@lib/util/handle-error"
-import { Region } from "@medusajs/medusa"
-import {
-  useCart,
-  useCreateLineItem,
-  useDeleteLineItem,
-  useUpdateLineItem,
-} from "medusa-react"
-import React, { useEffect, useState } from "react"
-import { useCartDropdown } from "./cart-dropdown-context"
+import { medusaClient } from '@lib/config'
+import { handleError } from '@lib/util/handle-error'
+import { Region } from '@medusajs/medusa'
+import { useCart, useCreateLineItem, useDeleteLineItem, useUpdateLineItem } from 'medusa-react'
+import React, { useEffect, useState } from 'react'
+
+import { useCartDropdown } from './cart-dropdown-context'
 
 interface VariantInfoProps {
   variantId: string
@@ -34,7 +30,7 @@ const StoreContext = React.createContext<StoreContext | null>(null)
 export const useStore = () => {
   const context = React.useContext(StoreContext)
   if (context === null) {
-    throw new Error("useStore must be used within a StoreProvider")
+    throw new Error('useStore must be used within a StoreProvider')
   }
   return context
 }
@@ -43,9 +39,9 @@ interface StoreProps {
   children: React.ReactNode
 }
 
-const IS_SERVER = typeof window === "undefined"
-const CART_KEY = "medusa_cart_id"
-const REGION_KEY = "medusa_region"
+const IS_SERVER = typeof window === 'undefined'
+const CART_KEY = 'medusa_cart_id'
+const REGION_KEY = 'medusa_region'
 
 export const StoreProvider = ({ children }: StoreProps) => {
   const { cart, setCart, createCart, updateCart } = useCart()
@@ -57,10 +53,7 @@ export const StoreProvider = ({ children }: StoreProps) => {
 
   const storeRegion = (regionId: string, countryCode: string) => {
     if (!IS_SERVER) {
-      localStorage.setItem(
-        REGION_KEY,
-        JSON.stringify({ regionId, countryCode })
-      )
+      localStorage.setItem(REGION_KEY, JSON.stringify({ regionId, countryCode }))
 
       setCountryCode(countryCode)
     }
@@ -97,12 +90,12 @@ export const StoreProvider = ({ children }: StoreProps) => {
           storeCart(cart.id)
           storeRegion(regionId, countryCode)
         },
-        onError: (error) => {
-          if (process.env.NODE_ENV === "development") {
+        onError: error => {
+          if (process.env.NODE_ENV === 'development') {
             console.error(error)
           }
         },
-      }
+      },
     )
   }
 
@@ -158,12 +151,12 @@ export const StoreProvider = ({ children }: StoreProps) => {
           storeCart(cart.id)
           ensureRegion(cart.region, cart.shipping_address?.country_code)
         },
-        onError: (error) => {
-          if (process.env.NODE_ENV === "development") {
+        onError: error => {
+          if (process.env.NODE_ENV === 'development') {
             console.error(error)
           }
         },
-      }
+      },
     )
   }
 
@@ -182,12 +175,12 @@ export const StoreProvider = ({ children }: StoreProps) => {
           storeCart(cart.id)
           ensureRegion(cart.region, cart.shipping_address?.country_code)
         },
-        onError: (error) => {
-          if (process.env.NODE_ENV === "development") {
+        onError: error => {
+          if (process.env.NODE_ENV === 'development') {
             console.error(error)
           }
         },
-      }
+      },
     )
   }
 
@@ -202,7 +195,7 @@ export const StoreProvider = ({ children }: StoreProps) => {
           .then(({ cart }) => {
             return cart
           })
-          .catch(async (_) => {
+          .catch(async _ => {
             return null
           })
 
@@ -226,13 +219,7 @@ export const StoreProvider = ({ children }: StoreProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const addItem = ({
-    variantId,
-    quantity,
-  }: {
-    variantId: string
-    quantity: number
-  }) => {
+  const addItem = ({ variantId, quantity }: { variantId: string; quantity: number }) => {
     addLineItem.mutate(
       {
         variant_id: variantId,
@@ -244,10 +231,10 @@ export const StoreProvider = ({ children }: StoreProps) => {
           storeCart(cart.id)
           timedOpen()
         },
-        onError: (error) => {
+        onError: error => {
           handleError(error)
         },
-      }
+      },
     )
   }
 
@@ -261,20 +248,14 @@ export const StoreProvider = ({ children }: StoreProps) => {
           setCart(cart)
           storeCart(cart.id)
         },
-        onError: (error) => {
+        onError: error => {
           handleError(error)
         },
-      }
+      },
     )
   }
 
-  const updateItem = ({
-    lineId,
-    quantity,
-  }: {
-    lineId: string
-    quantity: number
-  }) => {
+  const updateItem = ({ lineId, quantity }: { lineId: string; quantity: number }) => {
     adjustLineItem.mutate(
       {
         lineId,
@@ -285,10 +266,10 @@ export const StoreProvider = ({ children }: StoreProps) => {
           setCart(cart)
           storeCart(cart.id)
         },
-        onError: (error) => {
+        onError: error => {
           handleError(error)
         },
-      }
+      },
     )
   }
 

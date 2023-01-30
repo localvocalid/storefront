@@ -1,13 +1,10 @@
-import { getPercentageDiff } from "@lib/util/get-precentage-diff"
-import { Product, Region } from "@medusajs/medusa"
-import { formatAmount } from "medusa-react"
-import { ProductPreviewType } from "types/global"
-import { CalculatedVariant } from "types/medusa"
+import { getPercentageDiff } from '@lib/util/get-precentage-diff'
+import { Product, Region } from '@medusajs/medusa'
+import { formatAmount } from 'medusa-react'
+import { ProductPreviewType } from 'types/global'
+import { CalculatedVariant } from 'types/medusa'
 
-const transformProductPreview = (
-  product: Product,
-  region: Region
-): ProductPreviewType => {
+const transformProductPreview = (product: Product, region: Region): ProductPreviewType => {
   const variants = product.variants as CalculatedVariant[]
 
   let cheapestVariant = undefined
@@ -38,10 +35,7 @@ const transformProductPreview = (
             region: region,
             includeTaxes: false,
           }),
-          difference: getPercentageDiff(
-            cheapestVariant.original_price,
-            cheapestVariant.calculated_price
-          ),
+          difference: getPercentageDiff(cheapestVariant.original_price, cheapestVariant.calculated_price),
           price_type: cheapestVariant.calculated_price_type,
         }
       : undefined,

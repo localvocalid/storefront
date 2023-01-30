@@ -1,13 +1,13 @@
-import CartTemplate from "@modules/cart/templates"
-import Head from "@modules/common/components/head"
-import Layout from "@modules/layout/templates"
-import { ReactElement } from "react"
-import { NextPageWithLayout } from "types/global"
+import CartTemplate from '@modules/cart/templates'
+import Head from '@modules/common/components/head'
+import Layout from '@modules/layout/templates'
+import { ReactElement } from 'react'
+import { NextPageWithLayout } from 'types/global'
 
 const Cart: NextPageWithLayout = () => {
   return (
     <>
-      <Head title="Shopping Bag" description="View your shopping bag" />
+      <Head description="View your shopping bag" title="Shopping Bag" />
       <CartTemplate />
     </>
   )

@@ -1,5 +1,5 @@
-import NextHead from "next/head"
-import React from "react"
+import NextHead from 'next/head'
+import React from 'react'
 
 type HeadProps = {
   title?: string
@@ -10,11 +10,11 @@ type HeadProps = {
 const Head: React.FC<HeadProps> = ({ title, description, image }) => {
   return (
     <NextHead>
-      <title>{title} | ACME</title>
-      <meta itemProp="name" content={title} />
-      {description && <meta itemProp="description" content={description} />}
-      {image && <meta itemProp="image" content={image} />}
-      <link rel="icon" href="/favicon.ico" />
+      <title>{title} - Localvocal</title>
+      <meta content={title} itemProp="name" />
+      {description && <meta content={description} itemProp="description" />}
+      {image && <meta content={image} itemProp="image" />}
+      <link href="/favicon.ico" rel="icon" />
     </NextHead>
   )
 }

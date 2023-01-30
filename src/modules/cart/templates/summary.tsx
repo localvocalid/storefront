@@ -1,10 +1,10 @@
-import { Cart } from "@medusajs/medusa"
-import Button from "@modules/common/components/button"
-import CartTotals from "@modules/common/components/cart-totals"
-import Link from "next/link"
+import { Cart } from '@medusajs/medusa'
+import Button from '@modules/common/components/button'
+import CartTotals from '@modules/common/components/cart-totals'
+import Link from 'next/link'
 
 type SummaryProps = {
-  cart: Omit<Cart, "refundable_amount" | "refunded_total">
+  cart: Omit<Cart, 'refundable_amount' | 'refunded_total'>
 }
 
 const Summary = ({ cart }: SummaryProps) => {
@@ -13,7 +13,7 @@ const Summary = ({ cart }: SummaryProps) => {
       <CartTotals cart={cart} />
       <Link href="/checkout">
         <a>
-          <Button>Go to checkout</Button>
+          <Button>Checkout</Button>
         </a>
       </Link>
     </div>

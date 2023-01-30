@@ -1,10 +1,10 @@
-import { medusaClient } from "@lib/config"
-import { getPercentageDiff } from "@lib/util/get-precentage-diff"
-import { Product, ProductCollection, Region } from "@medusajs/medusa"
-import { formatAmount, useCart } from "medusa-react"
-import { useQuery } from "react-query"
-import { ProductPreviewType } from "types/global"
-import { CalculatedVariant } from "types/medusa"
+import { medusaClient } from '@lib/config'
+import { getPercentageDiff } from '@lib/util/get-precentage-diff'
+import { Product, ProductCollection, Region } from '@medusajs/medusa'
+import { formatAmount, useCart } from 'medusa-react'
+import { useQuery } from 'react-query'
+import { ProductPreviewType } from 'types/global'
+import { CalculatedVariant } from 'types/medusa'
 
 type LayoutCollection = {
   id: string
@@ -24,19 +24,19 @@ const fetchCollectionData = async (): Promise<LayoutCollection[]> => {
         count = newCount
         offset = collections.length
       })
-      .catch((_) => {
+      .catch(_ => {
         count = 0
       })
   } while (collections.length < count)
 
-  return collections.map((c) => ({
+  return collections.map(c => ({
     id: c.id,
     title: c.title,
   }))
 }
 
 export const useNavigationCollections = () => {
-  const queryResults = useQuery("navigation_collections", fetchCollectionData, {
+  const queryResults = useQuery('navigation_collections', fetchCollectionData, {
     staleTime: Infinity,
     refetchOnWindowFocus: false,
   })
@@ -44,22 +44,19 @@ export const useNavigationCollections = () => {
   return queryResults
 }
 
-const fetchFeaturedProducts = async (
-  cartId: string,
-  region: Region
-): Promise<ProductPreviewType[]> => {
+const fetchFeaturedProducts = async (cartId: string, region: Region): Promise<ProductPreviewType[]> => {
   const products = await medusaClient.products
     .list({
       is_giftcard: false,
-      limit: 4,
+      limit: 8,
       cart_id: cartId,
     })
     .then(({ products }) => products)
-    .catch((_) => [] as Product[])
+    .catch(_ => [] as Product[])
 
   return products
-    .filter((p) => !!p.variants)
-    .map((p) => {
+    .filter(p => !!p.variants)
+    .map(p => {
       const variants = p.variants as CalculatedVariant[]
 
       const cheapestVariant = variants.reduce((acc, curr) => {
@@ -86,17 +83,14 @@ const fetchFeaturedProducts = async (
                 region: region,
                 includeTaxes: false,
               }),
-              difference: getPercentageDiff(
-                cheapestVariant.original_price,
-                cheapestVariant.calculated_price
-              ),
+              difference: getPercentageDiff(cheapestVariant.original_price, cheapestVariant.calculated_price),
               price_type: cheapestVariant.calculated_price_type,
             }
           : {
-              calculated_price: "N/A",
-              original_price: "N/A",
-              difference: "N/A",
-              price_type: "default",
+              calculated_price: 'N/A',
+              original_price: 'N/A',
+              difference: 'N/A',
+              price_type: 'default',
             },
       }
     })
@@ -105,15 +99,11 @@ const fetchFeaturedProducts = async (
 export const useFeaturedProductsQuery = () => {
   const { cart } = useCart()
 
-  const queryResults = useQuery(
-    ["layout_featured_products", cart?.id, cart?.region],
-    () => fetchFeaturedProducts(cart?.id!, cart?.region!),
-    {
-      enabled: !!cart?.id && !!cart?.region,
-      staleTime: Infinity,
-      refetchOnWindowFocus: false,
-    }
-  )
+  const queryResults = useQuery(['layout_featured_products', cart?.id, cart?.region], () => fetchFeaturedProducts(cart?.id!, cart?.region!), {
+    enabled: !!cart?.id && !!cart?.region,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  })
 
   return queryResults
 }

@@ -1,43 +1,37 @@
-import { medusaClient } from "@lib/config"
-import { IS_BROWSER } from "@lib/constants"
-import { getProductHandles } from "@lib/util/get-product-handles"
-import Head from "@modules/common/components/head"
-import Layout from "@modules/layout/templates"
-import ProductTemplate from "@modules/products/templates"
-import SkeletonProductPage from "@modules/skeletons/templates/skeleton-product-page"
-import { GetStaticPaths, GetStaticProps } from "next"
-import { useRouter } from "next/router"
-import { ParsedUrlQuery } from "querystring"
-import { ReactElement } from "react"
-import { dehydrate, QueryClient, useQuery } from "react-query"
-import { NextPageWithLayout, PrefetchedPageProps } from "types/global"
+import { medusaClient } from '@lib/config'
+import { IS_BROWSER } from '@lib/constants'
+import { getProductHandles } from '@lib/util/get-product-handles'
+import Head from '@modules/common/components/head'
+import Layout from '@modules/layout/templates'
+import ProductTemplate from '@modules/products/templates'
+import SkeletonProductPage from '@modules/skeletons/templates/skeleton-product-page'
+import { GetStaticPaths, GetStaticProps } from 'next'
+import { useRouter } from 'next/router'
+import { ParsedUrlQuery } from 'querystring'
+import { ReactElement } from 'react'
+import { dehydrate, QueryClient, useQuery } from 'react-query'
+import { NextPageWithLayout, PrefetchedPageProps } from 'types/global'
 
 interface Params extends ParsedUrlQuery {
   handle: string
 }
 
 const fetchProduct = async (handle: string) => {
-  return await medusaClient.products
-    .list({ handle })
-    .then(({ products }) => products[0])
+  return await medusaClient.products.list({ handle }).then(({ products }) => products[0])
 }
 
 const ProductPage: NextPageWithLayout<PrefetchedPageProps> = ({ notFound }) => {
   const { query, isFallback, replace } = useRouter()
-  const handle = typeof query.handle === "string" ? query.handle : ""
+  const handle = typeof query.handle === 'string' ? query.handle : ''
 
-  const { data, isError, isLoading, isSuccess } = useQuery(
-    [`get_product`, handle],
-    () => fetchProduct(handle),
-    {
-      enabled: handle.length > 0,
-      keepPreviousData: true,
-    }
-  )
+  const { data, isError, isLoading, isSuccess } = useQuery(['get_product', handle], () => fetchProduct(handle), {
+    enabled: handle.length > 0,
+    keepPreviousData: true,
+  })
 
   if (notFound) {
     if (IS_BROWSER) {
-      replace("/404")
+      replace('/404')
     }
 
     return <SkeletonProductPage />
@@ -48,17 +42,13 @@ const ProductPage: NextPageWithLayout<PrefetchedPageProps> = ({ notFound }) => {
   }
 
   if (isError) {
-    replace("/404")
+    replace('/404')
   }
 
   if (isSuccess) {
     return (
       <>
-        <Head
-          description={data.description}
-          title={data.title}
-          image={data.thumbnail}
-        />
+        <Head description={data.description} image={data.thumbnail} title={data.title} />
         <ProductTemplate product={data} />
       </>
     )
@@ -74,21 +64,19 @@ ProductPage.getLayout = (page: ReactElement) => {
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
   const handles = await getProductHandles()
   return {
-    paths: handles.map((handle) => ({ params: { handle } })),
+    paths: handles.map(handle => ({ params: { handle } })),
     fallback: true,
   }
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async context => {
   const handle = context.params?.handle as string
 
   const queryClient = new QueryClient()
 
-  await queryClient.prefetchQuery([`get_product`, handle], () =>
-    fetchProduct(handle)
-  )
+  await queryClient.prefetchQuery(['get_product', handle], () => fetchProduct(handle))
 
-  const queryData = await queryClient.getQueryData([`get_product`, handle])
+  const queryData = await queryClient.getQueryData(['get_product', handle])
 
   if (!queryData) {
     return {

@@ -1,5 +1,5 @@
-import { medusaClient } from "@lib/config"
-import { Product, StoreGetProductsParams } from "@medusajs/medusa"
+import { medusaClient } from '@lib/config'
+import { Product, StoreGetProductsParams } from '@medusajs/medusa'
 
 const COL_LIMIT = 15
 
@@ -15,7 +15,7 @@ const getFeaturedProducts = async (): Promise<Product[]> => {
   const products = await medusaClient.products
     .list(payload)
     .then(({ products }) => products)
-    .catch((_) => [])
+    .catch(_ => [])
 
   return products
 }
@@ -30,15 +30,14 @@ const getGlobalData = async () => {
       totalCount = count
       return collections
     })
-    .catch((_) => undefined)
+    .catch(_ => undefined)
 
   const featuredProducts = await getFeaturedProducts()
 
   return {
     navData: {
       hasMoreCollections: totalCount > COL_LIMIT,
-      collections:
-        collections?.map((c) => ({ id: c.id, title: c.title })) || [],
+      collections: collections?.map(c => ({ id: c.id, title: c.title })) || [],
       featuredProducts,
     },
   }
@@ -54,9 +53,7 @@ export const getSiteData = async () => {
 
 // get data for a specific product, as well as global data
 export const getProductData = async (handle: string) => {
-  const data = await medusaClient.products
-    .list({ handle })
-    .then(({ products }) => products)
+  const data = await medusaClient.products.list({ handle }).then(({ products }) => products)
 
   const product = data[0]
 
@@ -81,7 +78,7 @@ const getInitialProducts = async (collectionId: string) => {
         hasMore: count > 10,
       }
     })
-    .catch((_) => ({ initialProducts: [], count: 0, hasMore: false }))
+    .catch(_ => ({ initialProducts: [], count: 0, hasMore: false }))
 
   return result
 }
@@ -115,10 +112,7 @@ type FetchProductListParams = {
   queryParams: StoreGetProductsParams
 }
 
-export const fetchProductsList = async ({
-  pageParam = 0,
-  queryParams,
-}: FetchProductListParams) => {
+export const fetchProductsList = async ({ pageParam = 0, queryParams }: FetchProductListParams) => {
   const { products, count, offset } = await medusaClient.products.list({
     limit: 12,
     offset: pageParam,

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 export type StateType = [boolean, () => void, () => void, () => void] & {
   state: boolean
@@ -32,7 +32,7 @@ const useToggleState = (initialState = false) => {
   }
 
   const toggle = () => {
-    setState((state) => !state)
+    setState(state => !state)
   }
 
   const hookData = [state, open, close, toggle] as StateType

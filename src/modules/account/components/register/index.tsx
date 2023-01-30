@@ -1,11 +1,11 @@
-import { medusaClient } from "@lib/config"
-import { LOGIN_VIEW, useAccount } from "@lib/context/account-context"
-import Button from "@modules/common/components/button"
-import Input from "@modules/common/components/input"
-import Link from "next/link"
-import { useRouter } from "next/router"
-import { useState } from "react"
-import { FieldValues, useForm } from "react-hook-form"
+import { medusaClient } from '@lib/config'
+import { LOGIN_VIEW, useAccount } from '@lib/context/account-context'
+import Button from '@modules/common/components/button'
+import Input from '@modules/common/components/input'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
 
 interface RegisterCredentials extends FieldValues {
   first_name: string
@@ -22,7 +22,7 @@ const Register = () => {
   const router = useRouter()
 
   const handleError = (e: Error) => {
-    setAuthError("An error occured. Please try again.")
+    setAuthError('An error occured. Please try again.')
   }
 
   const {
@@ -31,86 +31,54 @@ const Register = () => {
     formState: { errors },
   } = useForm<RegisterCredentials>()
 
-  const onSubmit = handleSubmit(async (credentials) => {
+  const onSubmit = handleSubmit(async credentials => {
     medusaClient.customers
       .create(credentials)
       .then(() => {
         refetchCustomer()
-        router.push("/account")
+        router.push('/account')
       })
       .catch(handleError)
   })
 
   return (
-    <div className="max-w-sm flex flex-col items-center mt-12">
-      <h1 className="text-large-semi uppercase mb-6">Become a Acme Member</h1>
-      <p className="text-center text-base-regular text-gray-700 mb-4">
-        Create your Acme Member profile, and get access to an enhanced shopping
-        experience.
-      </p>
+    <div className="max-w-sm flex flex-col items-center mt-12 px-4">
+      <h1 className="text-large-semi uppercase mb-6">Daftar akun Localvocal</h1>
+      <p className="text-center text-base-regular text-gray-700 mb-4">Buat akunmu, dan dapatkan pengalaman belanja yang lebih baik dan promo eksklusif.</p>
       <form className="w-full flex flex-col" onSubmit={onSubmit}>
         <div className="flex flex-col w-full gap-y-2">
-          <Input
-            label="First name"
-            {...register("first_name", { required: "First name is required" })}
-            autoComplete="given-name"
-            errors={errors}
-          />
-          <Input
-            label="Last name"
-            {...register("last_name", { required: "Last name is required" })}
-            autoComplete="family-name"
-            errors={errors}
-          />
-          <Input
-            label="Email"
-            {...register("email", { required: "Email is required" })}
-            autoComplete="email"
-            errors={errors}
-          />
-          <Input
-            label="Phone"
-            {...register("phone")}
-            autoComplete="tel"
-            errors={errors}
-          />
+          <Input label="First name" {...register('first_name', { required: 'First name is required' })} autoComplete="given-name" errors={errors} />
+          <Input label="Last name" {...register('last_name', { required: 'Last name is required' })} autoComplete="family-name" errors={errors} />
+          <Input label="Email" {...register('email', { required: 'Email is required' })} autoComplete="email" errors={errors} />
+          <Input label="Phone" {...register('phone')} autoComplete="tel" errors={errors} />
           <Input
             label="Password"
-            {...register("password", {
-              required: "Password is required",
+            {...register('password', {
+              required: 'Password is required',
             })}
-            type="password"
             autoComplete="new-password"
             errors={errors}
+            type="password"
           />
         </div>
         {authError && (
           <div>
-            <span className="text-rose-500 w-full text-small-regular">
-              These credentials do not match our records
-            </span>
+            <span className="text-rose-500 w-full text-small-regular">These credentials do not match our records</span>
           </div>
         )}
         <span className="text-center text-gray-700 text-small-regular mt-6">
-          By creating an account, you agree to Acme&apos;s{" "}
+          Dengan membuat akun, kamu menyetujui isi dari{' '}
           <Link href="/content/privacy-policy">
-            <a className="underline">Privacy Policy</a>
-          </Link>{" "}
-          and{" "}
-          <Link href="/content/terms-of-use">
-            <a className="underline">Terms of Use</a>
-          </Link>
-          .
+            <a className="underline">Ketentuan dan Privasi</a>
+          </Link>{' '}
+          Localvocal.
         </span>
         <Button className="mt-6">Join</Button>
       </form>
       <span className="text-center text-gray-700 text-small-regular mt-6">
-        Already a member?{" "}
-        <button
-          onClick={() => setCurrentView(LOGIN_VIEW.SIGN_IN)}
-          className="underline"
-        >
-          Sign in
+        Sudah punya akun?{' '}
+        <button className="underline" onClick={() => setCurrentView(LOGIN_VIEW.SIGN_IN)}>
+          Masuk
         </button>
         .
       </span>

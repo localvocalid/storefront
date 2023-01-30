@@ -1,16 +1,11 @@
-import { canBuy } from "@lib/util/can-buy"
-import { findCheapestPrice } from "@lib/util/prices"
-import isEqual from "lodash/isEqual"
-import { formatVariantPrice, useCart } from "medusa-react"
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react"
-import { Product, Variant } from "types/medusa"
-import { useStore } from "./store-context"
+import { canBuy } from '@lib/util/can-buy'
+import { findCheapestPrice } from '@lib/util/prices'
+import isEqual from 'lodash/isEqual'
+import { formatVariantPrice, useCart } from 'medusa-react'
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { Product, Variant } from 'types/medusa'
+
+import { useStore } from './store-context'
 
 interface ProductContext {
   formattedPrice: string
@@ -33,10 +28,7 @@ interface ProductProviderProps {
   product: Product
 }
 
-export const ProductProvider = ({
-  product,
-  children,
-}: ProductProviderProps) => {
+export const ProductProvider = ({ product, children }: ProductProviderProps) => {
   const [quantity, setQuantity] = useState<number>(1)
   const [options, setOptions] = useState<Record<string, string>>({})
   const [maxQuantityMet, setMaxQuantityMet] = useState<boolean>(false)
@@ -82,7 +74,7 @@ export const ProductProvider = ({
       }
     }
 
-    return variants.find((v) => v.id === variantId)
+    return variants.find(v => v.id === variantId)
   }, [options, variantRecord, variants])
 
   // if product only has one variant, then select it
@@ -102,10 +94,9 @@ export const ProductProvider = ({
       return formatVariantPrice({ variant, region: cart.region })
     } else if (cart?.region) {
       return findCheapestPrice(variants, cart.region)
-    } else {
-      // if no variant is selected, or we couldn't find a price for the region/currency
-      return "N/A"
     }
+    // if no variant is selected, or we couldn't find a price for the region/currency
+    return 'N/A'
   }, [variant, variants, cart])
 
   useEffect(() => {
@@ -171,9 +162,7 @@ export const ProductProvider = ({
 export const useProductActions = () => {
   const context = useContext(ProductActionContext)
   if (context === null) {
-    throw new Error(
-      "useProductActionContext must be used within a ProductActionProvider"
-    )
+    throw new Error('useProductActionContext must be used within a ProductActionProvider')
   }
   return context
 }

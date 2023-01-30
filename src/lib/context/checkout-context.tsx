@@ -1,26 +1,14 @@
-import { medusaClient } from "@lib/config"
-import useToggleState, { StateType } from "@lib/hooks/use-toggle-state"
-import {
-  Address,
-  Cart,
-  Customer,
-  StorePostCartsCartReq,
-} from "@medusajs/medusa"
-import Wrapper from "@modules/checkout/components/payment-wrapper"
-import { isEqual } from "lodash"
-import {
-  formatAmount,
-  useCart,
-  useCartShippingOptions,
-  useMeCustomer,
-  useRegions,
-  useSetPaymentSession,
-  useUpdateCart,
-} from "medusa-react"
-import { useRouter } from "next/router"
-import React, { createContext, useContext, useEffect, useMemo } from "react"
-import { FormProvider, useForm, useFormContext } from "react-hook-form"
-import { useStore } from "./store-context"
+import { medusaClient } from '@lib/config'
+import useToggleState, { StateType } from '@lib/hooks/use-toggle-state'
+import { Address, Cart, Customer, StorePostCartsCartReq } from '@medusajs/medusa'
+import Wrapper from '@modules/checkout/components/payment-wrapper'
+import { isEqual } from 'lodash'
+import { formatAmount, useCart, useCartShippingOptions, useMeCustomer, useRegions, useSetPaymentSession, useUpdateCart } from 'medusa-react'
+import { useRouter } from 'next/router'
+import React, { createContext, useContext, useEffect, useMemo } from 'react'
+import { FormProvider, useForm, useFormContext } from 'react-hook-form'
+
+import { useStore } from './store-context'
 
 type AddressValues = {
   first_name: string
@@ -42,7 +30,7 @@ export type CheckoutFormValues = {
 }
 
 interface CheckoutContext {
-  cart?: Omit<Cart, "refundable_amount" | "refunded_total">
+  cart?: Omit<Cart, 'refundable_amount' | 'refunded_total'>
   shippingMethods: { label: string; value: string; price: string }[]
   isLoading: boolean
   readyToComplete: boolean
@@ -62,16 +50,13 @@ interface CheckoutProviderProps {
   children?: React.ReactNode
 }
 
-const IDEMPOTENCY_KEY = "create_payment_session_key"
+const IDEMPOTENCY_KEY = 'create_payment_session_key'
 
 export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   const {
     cart,
     setCart,
-    addShippingMethod: {
-      mutate: setShippingMethod,
-      isLoading: addingShippingMethod,
-    },
+    addShippingMethod: { mutate: setShippingMethod, isLoading: addingShippingMethod },
     completeCheckout: { mutate: complete, isLoading: completingCheckout },
   } = useCart()
 
@@ -80,17 +65,12 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 
   const methods = useForm<CheckoutFormValues>({
     defaultValues: mapFormValues(customer, cart, countryCode),
-    reValidateMode: "onChange",
+    reValidateMode: 'onChange',
   })
 
-  const {
-    mutate: setPaymentSessionMutation,
-    isLoading: settingPaymentSession,
-  } = useSetPaymentSession(cart?.id!)
+  const { mutate: setPaymentSessionMutation, isLoading: settingPaymentSession } = useSetPaymentSession(cart?.id!)
 
-  const { mutate: updateCart, isLoading: updatingCart } = useUpdateCart(
-    cart?.id!
-  )
+  const { mutate: updateCart, isLoading: updatingCart } = useUpdateCart(cart?.id!)
 
   const { shipping_options } = useCartShippingOptions(cart?.id!, {
     enabled: !!cart?.id,
@@ -102,47 +82,26 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   const { push } = useRouter()
 
   const editAddresses = useToggleState()
-  const sameAsBilling = useToggleState(
-    cart?.billing_address && cart?.shipping_address
-      ? isEqual(cart.billing_address, cart.shipping_address)
-      : true
-  )
+  const sameAsBilling = useToggleState(cart?.billing_address && cart?.shipping_address ? isEqual(cart.billing_address, cart.shipping_address) : true)
 
   /**
    * Boolean that indicates if a part of the checkout is loading.
    */
   const isLoading = useMemo(() => {
-    return (
-      addingShippingMethod ||
-      settingPaymentSession ||
-      updatingCart ||
-      completingCheckout
-    )
-  }, [
-    addingShippingMethod,
-    completingCheckout,
-    settingPaymentSession,
-    updatingCart,
-  ])
+    return addingShippingMethod || settingPaymentSession || updatingCart || completingCheckout
+  }, [addingShippingMethod, completingCheckout, settingPaymentSession, updatingCart])
 
   /**
    * Boolean that indicates if the checkout is ready to be completed. A checkout is ready to be completed if
    * the user has supplied a email, shipping address, billing address, shipping method, and a method of payment.
    */
   const readyToComplete = useMemo(() => {
-    return (
-      !!cart &&
-      !!cart.email &&
-      !!cart.shipping_address &&
-      !!cart.billing_address &&
-      !!cart.payment_session &&
-      cart.shipping_methods?.length > 0
-    )
+    return !!cart && !!cart.email && !!cart.shipping_address && !!cart.billing_address && !!cart.payment_session && cart.shipping_methods?.length > 0
   }, [cart])
 
   const shippingMethods = useMemo(() => {
     if (shipping_options && cart?.region) {
-      return shipping_options?.map((option) => ({
+      return shipping_options?.map(option => ({
         value: option.id,
         label: option.name,
         price: formatAmount({
@@ -188,7 +147,7 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
         { option_id: soId },
         {
           onSuccess: ({ cart }) => setCart(cart),
-        }
+        },
       )
     }
   }
@@ -199,7 +158,7 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   const createPaymentSession = async (cartId: string) => {
     return medusaClient.carts
       .createPaymentSessions(cartId, {
-        "Idempotency-Key": IDEMPOTENCY_KEY,
+        'Idempotency-Key': IDEMPOTENCY_KEY,
       })
       .then(({ cart }) => cart)
       .catch(() => null)
@@ -234,7 +193,7 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
           onSuccess: ({ cart }) => {
             setCart(cart)
           },
-        }
+        },
       )
     }
   }
@@ -250,17 +209,17 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   const setSavedAddress = (address: Address) => {
     const setValue = methods.setValue
 
-    setValue("shipping_address", {
-      address_1: address.address_1 || "",
-      address_2: address.address_2 || "",
-      city: address.city || "",
-      country_code: address.country_code || "",
-      first_name: address.first_name || "",
-      last_name: address.last_name || "",
-      phone: address.phone || "",
-      postal_code: address.postal_code || "",
-      province: address.province || "",
-      company: address.company || "",
+    setValue('shipping_address', {
+      address_1: address.address_1 || '',
+      address_2: address.address_2 || '',
+      city: address.city || '',
+      country_code: address.country_code || '',
+      first_name: address.first_name || '',
+      last_name: address.last_name || '',
+      phone: address.phone || '',
+      postal_code: address.postal_code || '',
+      province: address.province || '',
+      company: address.company || '',
     })
   }
 
@@ -269,9 +228,7 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
    */
   const validateRegion = (countryCode: string) => {
     if (regions && cart) {
-      const region = regions.find((r) =>
-        r.countries.map((c) => c.iso_2).includes(countryCode)
-      )
+      const region = regions.find(r => r.countries.map(c => c.iso_2).includes(countryCode))
 
       if (region && region.id !== cart.region.id) {
         setRegion(region.id, countryCode)
@@ -348,9 +305,7 @@ export const useCheckout = () => {
   const context = useContext(CheckoutContext)
   const form = useFormContext<CheckoutFormValues>()
   if (context === null) {
-    throw new Error(
-      "useProductActionContext must be used within a ProductActionProvider"
-    )
+    throw new Error('useProductActionContext must be used within a ProductActionProvider')
   }
   return { ...context, ...form }
 }
@@ -361,88 +316,35 @@ export const useCheckout = () => {
  * 2. Customer information
  * 3. Default values - null
  */
-const mapFormValues = (
-  customer?: Omit<Customer, "password_hash">,
-  cart?: Omit<Cart, "refundable_amount" | "refunded_total">,
-  currentCountry?: string
-): CheckoutFormValues => {
+const mapFormValues = (customer?: Omit<Customer, 'password_hash'>, cart?: Omit<Cart, 'refundable_amount' | 'refunded_total'>, currentCountry?: string): CheckoutFormValues => {
   const customerShippingAddress = customer?.shipping_addresses?.[0]
   const customerBillingAddress = customer?.billing_address
 
   return {
     shipping_address: {
-      first_name:
-        cart?.shipping_address?.first_name ||
-        customerShippingAddress?.first_name ||
-        "",
-      last_name:
-        cart?.shipping_address?.last_name ||
-        customerShippingAddress?.last_name ||
-        "",
-      address_1:
-        cart?.shipping_address?.address_1 ||
-        customerShippingAddress?.address_1 ||
-        "",
-      address_2:
-        cart?.shipping_address?.address_2 ||
-        customerShippingAddress?.address_2 ||
-        "",
-      city: cart?.shipping_address?.city || customerShippingAddress?.city || "",
-      country_code:
-        currentCountry ||
-        cart?.shipping_address?.country_code ||
-        customerShippingAddress?.country_code ||
-        "",
-      province:
-        cart?.shipping_address?.province ||
-        customerShippingAddress?.province ||
-        "",
-      company:
-        cart?.shipping_address?.company ||
-        customerShippingAddress?.company ||
-        "",
-      postal_code:
-        cart?.shipping_address?.postal_code ||
-        customerShippingAddress?.postal_code ||
-        "",
-      phone:
-        cart?.shipping_address?.phone || customerShippingAddress?.phone || "",
+      first_name: cart?.shipping_address?.first_name || customerShippingAddress?.first_name || '',
+      last_name: cart?.shipping_address?.last_name || customerShippingAddress?.last_name || '',
+      address_1: cart?.shipping_address?.address_1 || customerShippingAddress?.address_1 || '',
+      address_2: cart?.shipping_address?.address_2 || customerShippingAddress?.address_2 || '',
+      city: cart?.shipping_address?.city || customerShippingAddress?.city || '',
+      country_code: currentCountry || cart?.shipping_address?.country_code || customerShippingAddress?.country_code || '',
+      province: cart?.shipping_address?.province || customerShippingAddress?.province || '',
+      company: cart?.shipping_address?.company || customerShippingAddress?.company || '',
+      postal_code: cart?.shipping_address?.postal_code || customerShippingAddress?.postal_code || '',
+      phone: cart?.shipping_address?.phone || customerShippingAddress?.phone || '',
     },
     billing_address: {
-      first_name:
-        cart?.billing_address?.first_name ||
-        customerBillingAddress?.first_name ||
-        "",
-      last_name:
-        cart?.billing_address?.last_name ||
-        customerBillingAddress?.last_name ||
-        "",
-      address_1:
-        cart?.billing_address?.address_1 ||
-        customerBillingAddress?.address_1 ||
-        "",
-      address_2:
-        cart?.billing_address?.address_2 ||
-        customerBillingAddress?.address_2 ||
-        "",
-      city: cart?.billing_address?.city || customerBillingAddress?.city || "",
-      country_code:
-        cart?.shipping_address?.country_code ||
-        customerBillingAddress?.country_code ||
-        "",
-      province:
-        cart?.shipping_address?.province ||
-        customerBillingAddress?.province ||
-        "",
-      company:
-        cart?.billing_address?.company || customerBillingAddress?.company || "",
-      postal_code:
-        cart?.billing_address?.postal_code ||
-        customerBillingAddress?.postal_code ||
-        "",
-      phone:
-        cart?.billing_address?.phone || customerBillingAddress?.phone || "",
+      first_name: cart?.billing_address?.first_name || customerBillingAddress?.first_name || '',
+      last_name: cart?.billing_address?.last_name || customerBillingAddress?.last_name || '',
+      address_1: cart?.billing_address?.address_1 || customerBillingAddress?.address_1 || '',
+      address_2: cart?.billing_address?.address_2 || customerBillingAddress?.address_2 || '',
+      city: cart?.billing_address?.city || customerBillingAddress?.city || '',
+      country_code: cart?.shipping_address?.country_code || customerBillingAddress?.country_code || '',
+      province: cart?.shipping_address?.province || customerBillingAddress?.province || '',
+      company: cart?.billing_address?.company || customerBillingAddress?.company || '',
+      postal_code: cart?.billing_address?.postal_code || customerBillingAddress?.postal_code || '',
+      phone: cart?.billing_address?.phone || customerBillingAddress?.phone || '',
     },
-    email: cart?.email || customer?.email || "",
+    email: cart?.email || customer?.email || '',
   }
 }

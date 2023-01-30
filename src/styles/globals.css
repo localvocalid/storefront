@@ -2,6 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Biome Pro';
+  src: local('Biome Pro Black'), local('BiomePro-Black'), url('../../public/static/fonts/BiomePro-Black.woff2') format('woff2'), url('../../public/static/fonts/BiomePro-Black.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Biome Pro Ultra';
+  src: local('Biome Pro Ultra'), local('BiomePro-Ultra'), url('../../public/static/fonts/BiomePro-Ultra.woff2') format('woff2'), url('../../public/static/fonts/BiomePro-Ultra.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Biome Pro';
+  src: local('Biome Pro Italic'), local('BiomePro-Italic'), url('../../public/static/fonts/BiomePro-Italic.woff2') format('woff2'), url('../../public/static/fonts/BiomePro-Italic.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Biome Pro';
+  src: local('Biome Pro'), local('BiomePro-Regular'), url('../../public/static/fonts/BiomePro-Regular.woff2') format('woff2'), url('../../public/static/fonts/BiomePro-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Biome Pro';
+  src: local('Biome Pro Bold'), local('BiomePro-Bold'), url('../../public/static/fonts/BiomePro-Bold.woff2') format('woff2'), url('../../public/static/fonts/BiomePro-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Biome Pro';
+  src: local('Biome Pro Semi Bold'), local('BiomePro-SemiBold'), url('../../public/static/fonts/BiomePro-SemiBold.woff2') format('woff2'), url('../../public/static/fonts/BiomePro-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body {
+  @apply bg-neutral-200 min-h-screen;
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
@@ -19,7 +72,7 @@
 
   input:focus ~ label,
   input:not(:placeholder-shown) ~ label {
-    @apply -translate-y-2 text-xsmall-regular; 
+    @apply -translate-y-2 text-xsmall-regular;
   }
 
   input:focus ~ label {
@@ -41,17 +94,17 @@
     transition: background-color 5000s ease-in-out 0s;
   }
 
-  input[type="search"]::-webkit-search-decoration,
-  input[type="search"]::-webkit-search-cancel-button,
-  input[type="search"]::-webkit-search-results-button,
-  input[type="search"]::-webkit-search-results-decoration {
+  input[type='search']::-webkit-search-decoration,
+  input[type='search']::-webkit-search-cancel-button,
+  input[type='search']::-webkit-search-results-button,
+  input[type='search']::-webkit-search-results-decoration {
     -webkit-appearance: none;
   }
 }
 
 @layer components {
   .content-container {
-    @apply max-w-[1440px] w-full mx-auto px-8
+    @apply max-w-[1440px] w-full mx-auto px-8;
   }
 
   .contrast-btn {

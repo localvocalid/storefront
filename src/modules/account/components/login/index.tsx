@@ -1,10 +1,10 @@
-import { medusaClient } from "@lib/config"
-import { LOGIN_VIEW, useAccount } from "@lib/context/account-context"
-import Button from "@modules/common/components/button"
-import Input from "@modules/common/components/input"
-import { useRouter } from "next/router"
-import { useState } from "react"
-import { FieldValues, useForm } from "react-hook-form"
+import { medusaClient } from '@lib/config'
+import { LOGIN_VIEW, useAccount } from '@lib/context/account-context'
+import Button from '@modules/common/components/button'
+import Input from '@modules/common/components/input'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
 
 interface SignInCredentials extends FieldValues {
   email: string
@@ -18,7 +18,7 @@ const Login = () => {
   const router = useRouter()
 
   const handleError = (_e: Error) => {
-    setAuthError("Invalid email or password")
+    setAuthError('Invalid email or password')
   }
 
   const {
@@ -27,54 +27,36 @@ const Login = () => {
     formState: { errors },
   } = useForm<SignInCredentials>()
 
-  const onSubmit = handleSubmit(async (credentials) => {
+  const onSubmit = handleSubmit(async credentials => {
     medusaClient.auth
       .authenticate(credentials)
       .then(() => {
         refetchCustomer()
-        router.push("/account")
+        router.push('/account')
       })
       .catch(handleError)
   })
 
   return (
-    <div className="max-w-sm w-full flex flex-col items-center">
-      <h1 className="text-large-semi uppercase mb-6">Welcome back</h1>
-      <p className="text-center text-base-regular text-gray-700 mb-8">
-        Sign in to access an enhanced shopping experience.
-      </p>
+    <div className="max-w-sm w-full flex flex-col items-center px-4">
+      <h1 className="text-large-semi uppercase mb-6">Masuk</h1>
+      <p className="text-center text-base-regular text-gray-700 mb-8">Masuk untuk mendapat pengalaman belanja lebih baik dan promo eksklusif</p>
       <form className="w-full" onSubmit={onSubmit}>
         <div className="flex flex-col w-full gap-y-2">
-          <Input
-            label="Email"
-            {...register("email", { required: "Email is required" })}
-            autoComplete="email"
-            errors={errors}
-          />
-          <Input
-            label="Password"
-            {...register("password", { required: "Password is required" })}
-            type="password"
-            autoComplete="current-password"
-            errors={errors}
-          />
+          <Input label="Email" {...register('email', { required: 'Email is required' })} autoComplete="email" errors={errors} />
+          <Input label="Password" {...register('password', { required: 'Password is required' })} autoComplete="current-password" errors={errors} type="password" />
         </div>
         {authError && (
           <div>
-            <span className="text-rose-500 w-full text-small-regular">
-              These credentials do not match our records
-            </span>
+            <span className="text-rose-500 w-full text-small-regular">Email atau password salah</span>
           </div>
         )}
-        <Button className="mt-6">Enter</Button>
+        <Button className="mt-6">Masuk</Button>
       </form>
       <span className="text-center text-gray-700 text-small-regular mt-6">
-        Not a member?{" "}
-        <button
-          onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
-          className="underline"
-        >
-          Join us
+        Belum punya akun?{' '}
+        <button className="underline" onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}>
+          Daftar disini
         </button>
         .
       </span>

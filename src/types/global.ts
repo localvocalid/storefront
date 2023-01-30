@@ -1,7 +1,7 @@
-import { Product } from "@medusajs/medusa"
-import { NextPage } from "next"
-import { AppProps } from "next/app"
-import { ReactElement, ReactNode } from "react"
+import { Product } from '@medusajs/medusa'
+import { NextPage } from 'next'
+import { AppProps } from 'next/app'
+import { ReactElement, ReactNode } from 'react'
 
 export type CollectionData = {
   id: string
@@ -57,7 +57,7 @@ export type ProductPreviewType = {
     calculated_price: string
     original_price: string
     difference: string
-    price_type: "default" | "sale"
+    price_type: 'default' | 'sale'
   }
 }
 

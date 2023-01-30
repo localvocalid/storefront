@@ -1,13 +1,10 @@
-import FooterCTA from "@modules/layout/components/footer-cta"
-import FooterNav from "@modules/layout/components/footer-nav"
-import MedusaCTA from "@modules/layout/components/medusa-cta"
+import FooterNav from '@modules/layout/components/footer-nav'
+import MedusaCTA from '@modules/layout/components/medusa-cta'
 
 const Footer = () => {
   return (
-    <footer>
-      <FooterCTA />
+    <footer className="bg-neutral-900 text-white mt-auto pb-16">
       <FooterNav />
-      <MedusaCTA />
     </footer>
   )
 }
