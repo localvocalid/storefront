@@ -10,12 +10,12 @@ const SkeletonProductPage = () => {
           <div className="flex items-start relative">
             <div className="hidden small:flex flex-col gap-y-4 sticky top-20">
               {repeat(2).map(index => {
-                return <div key={index} className="h-14 w-12 bg-gray-100 rounded-full"></div>
+                return <div className="h-14 w-12 bg-gray-100 rounded-full" key={index}></div>
               })}
             </div>
             <div className="flex flex-col flex-1 small:mx-16 gap-y-4">
               {repeat(2).map(index => {
-                return <div key={index} className="relative aspect-[29/34] w-full bg-gray-100 rounded-full"></div>
+                return <div className="relative aspect-[29/34] w-full bg-gray-100 rounded-full" key={index}></div>
               })}
             </div>
           </div>
@@ -30,7 +30,7 @@ const SkeletonProductPage = () => {
 
                   <div className="flex flex-col gap-y-2 mt-4">
                     {repeat(4).map(index => (
-                      <div key={index} className="h-4 w-62 bg-gray-100 rounded-full"></div>
+                      <div className="h-4 w-62 bg-gray-100 rounded-full" key={index}></div>
                     ))}
                   </div>
 
@@ -38,7 +38,7 @@ const SkeletonProductPage = () => {
                     <div className="bg-gray-100 rounded-full h-6 w-16"></div>
                     <div className="grid grid-cols-3 lg:grid-cols-6 gap-2">
                       {repeat(4).map(v => {
-                        return <div key={v} className="bg-gray-100 rounded-full w-[50px] h-[50px]"></div>
+                        return <div className="bg-gray-100 rounded-full w-[50px] h-[50px]" key={v}></div>
                       })}
                     </div>
                   </div>

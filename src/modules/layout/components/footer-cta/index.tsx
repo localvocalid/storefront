@@ -13,7 +13,7 @@ const FooterCTA = () => {
         </div>
 
         <div className="relative w-full aspect-square small:w-[35%] small:aspect-[28/36]">
-          <Image alt="" className="absolute inset-0" layout="fill" objectFit="cover" src="/cta_three.jpg" />
+          <Image alt="" className="absolute inset-0 " layout="fill" objectFit="cover" src="/cta_three.jpg" />
         </div>
       </div>
     </div>

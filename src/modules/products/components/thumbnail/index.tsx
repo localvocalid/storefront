@@ -29,7 +29,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ thumbnail, images, size = 'small'
 
 const ImageOrPlaceholder = ({ image, size }: Pick<ThumbnailProps, 'size'> & { image?: string }) => {
   return image ? (
-    <Image alt="Thumbnail" className="absolute inset-0 rounded-xl" draggable={false} layout="fill" objectFit="cover" objectPosition="center" src={image} />
+    <Image alt="Thumbnail" className="absolute inset-0 rounded-xl !object-top" draggable={false} layout="fill" objectFit="cover" objectPosition="center" src={image} />
   ) : (
     <div className="w-full h-full absolute inset-0 bg-gray-100 flex items-center justify-center">
       <PlaceholderImage size={size === 'small' ? 16 : 24} />

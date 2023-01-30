@@ -15,7 +15,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
         {images.map((image, index) => {
           return (
             <div className="relative aspect-[29/34] w-full" id={image.id} key={image.id} ref={image => imageRefs.current.push(image)}>
-              <Image alt={`Product image ${index + 1}`} className="absolute inset-0 rounded-xl" layout="fill" objectFit="cover" priority={index <= 2} src={image.url} />
+              <Image alt={`Product image ${index + 1}`} className="absolute inset-0 rounded-xl !object-top" layout="fill" objectFit="cover" priority={index <= 2} src={image.url} />
             </div>
           )
         })}

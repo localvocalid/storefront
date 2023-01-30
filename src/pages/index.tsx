@@ -14,7 +14,12 @@ const Home: NextPageWithLayout = () => {
       <Head description="Wherever you are, Localvocal client advisors will be delighted to assist you." title="Home" />
       <Hero />
 
-      <div className="content-container pt-8 flex flex-wrap gap-4 w-full">
+      <div className="content-container pt-8 flex flex-wrap gap-x-2 w-full gap-y-4">
+        <li className="list-none">
+          <Link href={'/collections/'}>
+            <a className="rounded-full border  border-neutral-900 py-1 px-4 bg-neutral-900 text-white">All Products</a>
+          </Link>
+        </li>
         {collections?.map(c => (
           <li className="list-none" key={c.id}>
             <Link href={`/collections/${c.id}`}>
