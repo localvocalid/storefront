@@ -47,7 +47,7 @@ const RefinementList = ({ refinementList, setRefinementList }: RefinementListPro
             {collections?.map(c => (
               <li key={c.id}>
                 <label className="flex items-center gap-x-2">
-                  <input className="accent-amber-200" defaultChecked={refinementList.collection_id?.includes(c.id)} onChange={e => handleCollectionChange(e, c.id)} type="checkbox" />
+                  <input className="accent-primary rounded-full" defaultChecked={refinementList.collection_id?.includes(c.id)} onChange={e => handleCollectionChange(e, c.id)} type="checkbox" />
                   {c.title}
                 </label>
               </li>

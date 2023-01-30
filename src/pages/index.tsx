@@ -18,7 +18,7 @@ const Home: NextPageWithLayout = () => {
         {collections?.map(c => (
           <li className="list-none" key={c.id}>
             <Link href={`/collections/${c.id}`}>
-              <a className="rounded-full border border-neutral-900 py-1 px-4 hover:bg-neutral-900 hover:text-white">{c.title}</a>
+              <a className="rounded-full border text-neutral-900 border-neutral-900 py-1 px-4 hover:bg-neutral-900 hover:text-white">{c.title}</a>
             </Link>
           </li>
         ))}
