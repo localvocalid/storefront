@@ -32,7 +32,7 @@ module.exports = {
     'no-sequences': 'error',
 
     // Stylistic
-    "no-useless-escape": 'off',
+    'no-useless-escape': 'off',
     'array-bracket-spacing': 'error',
     'computed-property-spacing': ['error', 'never'],
     curly: 'error',
@@ -54,8 +54,6 @@ module.exports = {
 
     // Imports & Exports
     'import/prefer-default-export': 'off',
-    "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
     'no-unused-expressions': 'off',
     'no-prototype-builtins': 'off',
 
@@ -82,6 +80,10 @@ module.exports = {
 
     // Typescript
     '@typescript-eslint/no-explicit-any': ['off'],
+    '@typescript-eslint/no-non-null-asserted-optional-chain': ['off'],
+    '@typescript-eslint/no-unnecessary-type-constraint': ['off'],
+    '@typescript-eslint/no-empty-function': ['off'],
+    '@typescript-eslint/ban-ts-comment': ['off'],
 
     // Prettier
     'prettier/prettier': ['error', prettierConfig],
