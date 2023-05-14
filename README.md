@@ -5,7 +5,7 @@
 </p>
 
 <h1 align="center">
-  Medusa Next.js Starter
+  Localvocal Storefront
 </h1>
 
 <p align="center">
